@@ -1,0 +1,13 @@
+<ngx-ui-loader   bgsColor="#73077d"  [bgsSize]=150 bgsPosition="center-center" bgsType="three-strings"></ngx-ui-loader>
+<ng-template [ngIf]="ShowHeader">
+    <app-header></app-header>
+</ng-template>
+<ng-template [ngIf]="ShowMenu">
+    <app-sidebar></app-sidebar>
+</ng-template>
+
+<router-outlet></router-outlet>
+
+<ng-template [ngIf]="ShowFooter">
+    <app-footer></app-footer>
+</ng-template>

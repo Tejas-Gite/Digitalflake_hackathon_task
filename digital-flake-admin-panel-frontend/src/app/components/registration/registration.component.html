@@ -1,0 +1,102 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="assets/icons/agency.png" class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form [formGroup]="registrationForm" (ngSubmit)="registrationService(registrationForm)">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <img src="assets/icons/digitalFlake1.png" alt="" style="width: 300px;">
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="addName">First Name</label>
+                                <input id="addName" type="text" class="form-control" formControlName="first_name"
+                                    placeholder="Enter name">
+                                <ng-container class="col-3"
+                                    *ngIf="registrationForm.hasError('required',['first_name']) && registrationForm.controls['first_name'].touched">
+                                    <p class="invalid">Invalid Input</p>
+                                </ng-container>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="addName">Last Name</label>
+                                <input id="addName" type="text" class="form-control" formControlName="last_name"
+                                    placeholder="Enter name">
+                                <ng-container class="col-3"
+                                    *ngIf="registrationForm.hasError('required',['last_name']) && registrationForm.controls['last_name'].touched">
+                                    <p class="invalid">Invalid Input</p>
+                                </ng-container>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="addMobile">Mobile Number</label>
+                            <input id="addMobile" type="text" class="form-control mb-1" formControlName="mobile"
+                                onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
+                                placeholder="Enter Mobile Number">
+                            <ng-container class="col-3" *ngIf="(registrationForm.hasError('required',['mobile']) && registrationForm.controls['mobile'].touched) || registrationForm.hasError('pattern',['mobile']) ">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addEmail">Email id</label>
+                            <input id="addEmail" type="email" class="form-control" formControlName="email"
+                                placeholder="Enter email id">
+                            <ng-container class="col-3"
+                                *ngIf="(registrationForm.hasError('required',['email']) || registrationForm.hasError('email',['email']) || registrationForm.hasError('pattern',['email'])) && registrationForm.controls['email'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="addPassword1">Password</label>
+                            <input id="addPassword1" type="{{password}}" class="form-control" formControlName="password"
+                                placeholder="Enter Password">
+                            <ng-container class="col-3"
+                                *ngIf="(registrationForm.hasError('required',['password'])||registrationForm.hasError('pattern',['password'])) && registrationForm.controls['password'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                        <div class="form-group">
+                            <label for="addPassword2">Re-enter password</label>
+                            <input id="addPassword2" type="{{password}}" class="form-control"
+                                formControlName="re_enter_password" placeholder="Re-enter password">
+                            <input id="showpass" type="checkbox" [checked]="false" (click)="showPassword($event)"
+                                formControlName="showpassword"> <label for="showpass" class="ml-3">Show
+                                Password</label>
+
+                            <ng-container class="col-3"
+                                *ngIf="(registrationForm.hasError('required',['re_enter_password'])||registrationForm.hasError('pattern',['re_enter_password'])||registrationForm.errors?.['passwordMissmatchError']) && registrationForm.controls['re_enter_password'].touched">
+                                <p *ngIf="registrationForm.hasError('required',['re_enter_password'])" class="invalid">
+                                    Invalid
+                                    Input</p>
+                                <p *ngIf="registrationForm.hasError('pattern',['re_enter_password'])" class="invalid">At
+                                    least 8
+                                    characters in length, Lowercase letters, Uppercase letters, Numbers, Special
+                                    characters</p>
+                                <p *ngIf="registrationForm.errors?.['passwordMissmatchError']" class="invalid">
+                                    Password Does
+                                    not
+                                    match</p>
+                            </ng-container>
+                        </div>
+
+                    </div>
+
+                    <div class="w-100 ">
+                        <div class="float-right ">
+                            <button *ngIf="registrationForm.valid" type="submit"
+                                class="btn btn-primary btn-block bg-btn ">Register</button>
+                            <button *ngIf="registrationForm.invalid" (click)="touched(registrationForm)" type="button"
+                                class="btn btn-primary btn-block bg-btn">Register</button>
+                        </div>
+                    </div>
+                </form>
+                Already Registered ? <a routerLink="/login" class="login-page_links">Go To Login Page</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,94 @@
+/* You can add global styles to this file, and also import other style files */
+.link-active {
+    background-color: #e39fe9;
+}
+
+.header-bg-color {
+    background-color: #73077d;
+}
+
+.text-color {
+    color: white;
+}
+
+.login-page_links
+{
+    color: #73077d;
+    cursor: pointer;
+
+}
+.forgot-page
+{
+    color: #73077d;
+}
+
+.bg-btn {
+    border-color: #73077d !important;
+    background-color: #73077d !important;
+    /* border-radius: 10px !important; */
+}
+
+.bg-btn-save {
+    border-color: #73077d !important;
+    background-color: #73077d !important;
+    border-radius: 20px !important;
+    width: 150px;
+}
+
+.bg-btn-cancel {
+    border-color: #050505 !important;
+    background-color: #ffffff !important;
+    color: #050505 !important;
+    border-radius: 20px !important;
+    width: 150px !important;
+}
+
+.invalid {
+    color: red;
+}
+
+.inActive {
+    filter: opacity(0.5) drop-shadow(0 0 0 rgb(213, 213, 213));
+}
+
+.main-search-add {
+    width: 50% !important;
+    margin-top: 10px !important;
+    display: inline !important;
+}
+
+.pagination a {
+    color: #73077d;
+}
+
+.pagination li :hover {
+    background: #e39fe9 !important;
+    color: #73077d !important;
+}
+
+.btn-logout {
+    background-color: white !important;
+    color: red !important;
+    font-weight: bold !important;
+    border-color: red !important;
+
+}
+
+.swal2-cancel {
+    background-color: white !important;
+    color: black !important;
+}
+
+.swal2-confirm {
+    background-color: #73077d !important;
+    color: white !important;
+}
+.text-warp
+{
+    text-wrap: nowrap; 
+}
+.inp-c
+{
+    width: 250px;
+}
+

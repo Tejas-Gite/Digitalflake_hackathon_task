@@ -1,0 +1,239 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{component_name}}</h1>
+                </div><!-- /.col -->
+                <!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <div class="container-fluid {{listing_block}}">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{component_name}} List</h3>
+                <br>
+                <br>
+                <div class="w-100 d-inline-block">
+                    <div class="main-search-add">
+                        <label for="">Search : </label>
+                        <input class="ml-3 mt-1 form-control col-6 d-inline-block" type="text" placeholder="Search by ID/Name" (keyup)="search($event.target)">
+                    </div>
+                    <div class="main-search-add">
+                        <button class="float-right  btn btn-success bg-btn" (click)="addBtn();addForm.reset({name:'',description:'',isActive:1})">Add New</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="overflow-x:auto;">
+                <table class="table ">
+                    <thead>
+                        <tr class="text-center text-warp">
+                            <th style="width: 80px">Sr no</th>
+                            <th (click)='sort(this.page,"id",this.col1,this.name)'>ID <i class="fa fa-arrow-up" *ngIf="col1==-1"></i> <i class="fa fa-arrow-down" *ngIf="col1==1"></i></th>
+                            <th (click)='sort(this.page,"name",this.col2,this.name)' >Name <i class="fa fa-arrow-up" *ngIf="col2==-1"></i> <i class="fa fa-arrow-down" *ngIf="col2==1"></i></th>
+                            <th (click)='sort(this.page,"description",this.col3,this.name)'>Description <i class="fa fa-arrow-up" *ngIf="col3==-1"></i> <i class="fa fa-arrow-down" *ngIf="col3==1"></i></th>
+                            <th (click)='sort(this.page,"isActive",this.col4,this.name)'>Status <i class="fa fa-arrow-up" *ngIf="col4==-1"></i> <i class="fa fa-arrow-down" *ngIf="col4==1"></i></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let data of Data; let i = index">
+                            <tr class="text-center">
+                                <td>{{((page*limit)-limit)+i+1}}</td>
+                                <td>{{data.id}}</td>
+                                <td>{{data.name | titlecase}}</td>
+                                <td>{{data.description | titlecase}}</td>
+                                <td>
+                                    <div class="h-100 d-flex align-items-center justify-content-center">
+                                        <p *ngIf="data.isActive == 1" style="color: green;">Active</p>
+                                        <p *ngIf="data.isActive == 0" style="color: red;">Inactive</p>
+                                    </div>
+                                </td>
+                                <td >
+                                    <div class="h-100 d-flex align-items-center justify-content-center">
+                                        <img (click)="getUpdateData(data.id,updateForm)" src="assets/icons/update_icon.png" alt="update_icon" style="height: 30px; width: 30px;">
+                                        <img *ngIf="data.isActive == 1" (click)="deleteService(data.id)" src="assets/icons/delete_icon.png" alt="view_icon" class="ml-2" style=" height: 20px; width: 20px;">
+                                        <img *ngIf="data.isActive == 0" src="assets/icons/delete_icon.png" alt="view_icon" class="ml-2 inActive" style=" height: 20px; width: 20px;;">
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+                <form [formGroup]="paginationForm">
+                    <div class="h-100 d-flex align-items-center justify-content-center"> items per page : 
+                        <select (change)="onChange($event.target)" formControlName="Limit" class="ml-2">
+                            <option disabled>{{limit}}</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                            <option value="60">60</option>
+                            <option value="70">70</option>
+                            <option value="80">80</option>
+                            <option value="90">90</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="h-100 d-flex align-items-center justify-content-center mt-3">
+                        <div class="d-flex justify-content-end">
+
+                            <ul class="pagination">
+                                <!-- First button pagination -->
+                                <ng-container *ngIf="back; then first1; else first2"></ng-container>
+                                <ng-template #first1>
+                                    <li class="page-item"><a (click)="firstPage()" class="page-link">First</a></li>
+                                </ng-template>
+                                <ng-template #first2>
+                                    <li class="page-item"><a class="page-link">First</a></li>
+                                </ng-template>
+                                <!-- Back button pagination -->
+                                <ng-container *ngIf="back; then back1; else back2"></ng-container>
+                                <ng-template #back1>
+                                    <li class="page-item"><a (click)="backPage()" class="page-link">&laquo;</a></li>
+                                </ng-template>
+                                <ng-template #back2>
+                                    <li class="page-item"><a class="page-link">&laquo;</a></li>
+                                </ng-template>
+                                <!-- Display page no. in pagination -->
+                                <li class="page-item" class="page-item active"><a #page1 class="page-link bg-btn">{{page}}</a>
+                                </li>
+                                <!-- next button pagination -->
+                                <ng-container *ngIf="next; then next1; else next2"></ng-container>
+                                <ng-template #next1>
+                                    <li class="page-item"><a (click)="nextPage() " class="page-link">&raquo;</a></li>
+                                </ng-template>
+                                <ng-template #next2>
+                                    <li class="page-item"><a class="page-link">&raquo;</a></li>
+                                </ng-template>
+                                <!-- last button pagination -->
+                                <ng-container *ngIf="next; then last1; else last2"></ng-container>
+                                <ng-template #last1>
+                                    <li class="page-item"><a (click)="lastPage()" class="page-link">Last</a></li>
+                                </ng-template>
+                                <ng-template #last2>
+                                    <li class="page-item"><a class="page-link">Last</a></li>
+                                </ng-template>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-fluid {{add_block}}" style="display: block;">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"> <i class="fa fa-arrow-left mr-4" (click)="BackBtn(); addForm.reset({name:'',description:'',isActive:1})"></i> Add {{component_name}}</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form [formGroup]="addForm" (ngSubmit)="addFormService(addForm)">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="ml-2 form-group inp-c">
+                            <label for="addName">Category Name</label>
+                            <input id="addName" type="text" class="form-control" formControlName="name" placeholder="Enter category name">
+                            <ng-container class="col-3" *ngIf="addForm.hasError('required',['name']) && addForm.controls['name'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                        <div class="ml-2 form-group inp-c">
+                            <label for="adddescription">Description</label>
+                            <input id="adddescription" type="text" class="form-control" formControlName="description" placeholder="Enter Description">
+                            <ng-container class="col-3" *ngIf="addForm.hasError('required',['description']) && addForm.controls['description'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                        <div class="ml-2 form-group inp-c">
+                            <label for="addStatus">Status</label>
+                            <select id="addStatus" class="form-control" formControlName="isActive">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                            <ng-container class="col-3" *ngIf="addForm.hasError('required',['isActive']) && addForm.controls['isActive'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+
+                        <div class="ml-2 form-group">
+                            <button type="button" class="btn btn-primary bg-btn-cancel " (click)="BackBtn(); addForm.reset({name:'',description:'',isActive:1})">Cancel</button>
+                        </div>
+                        <div class="ml-2 form-group">
+                            <button *ngIf="addForm.valid" type="submit" class="btn btn-primary bg-btn-save">Save</button>
+                            <button *ngIf="addForm.invalid" (click)="touched(addForm)" type="button" class="btn btn-primary bg-btn-save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid {{update_block}}" style="display: block;">
+        <div class="card ">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa fa-arrow-left mr-4" (click)="BackBtn(); updateForm.reset()"></i> Update {{component_name}}</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form [formGroup]="updateForm" (ngSubmit)="updateFormService(updateForm)">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="ml-2 form-group inp-c">
+                            <label for="updateName">Name</label>
+                            <input id="updateName" type="text" class="form-control" formControlName="name" placeholder="Enter name">
+                            <ng-container class="col-3" *ngIf="updateForm.hasError('required',['name']) && updateForm.controls['name'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                        <div class="ml-2 form-group inp-c">
+                            <label for="updatedescription">Description</label>
+                            <input id="updatedescription" type="text" class="form-control" formControlName="description" placeholder="Enter Description">
+                            <ng-container class="col-3" *ngIf="updateForm.hasError('required',['description']) && updateForm.controls['description'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                        <div class="ml-2 form-group inp-c">
+                            <label for="updateStatus">Status</label>
+                            <select id="updateStatus" class="form-control" formControlName="isActive">
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                            <ng-container class="col-3" *ngIf="updateForm.hasError('required',['isActive']) && updateForm.controls['isActive'].touched">
+                                <p class="invalid">Invalid Input</p>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="ml-2 form-group">
+                            <button type="button" class="btn btn-primary bg-btn-cancel " (click)="BackBtn(); updateForm.reset()">Cancel</button>
+                        </div>
+                        <div class="ml-2 form-group">
+                            <button *ngIf="updateForm.valid" type="submit" class="btn btn-primary bg-btn-save">Save</button>
+                            <button *ngIf="updateForm.invalid" (click)="touched(updateForm)" type="button" class="btn btn-primary bg-btn-save">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
